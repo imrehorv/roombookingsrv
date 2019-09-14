@@ -36,6 +36,16 @@ public class RoomResource {
 		room.setId("room2");
 		room.setName("Room2");
 		
+		room=new Room();
+		roomlist.add(room);
+		room.setId("room3");
+		room.setName("Room3");
+		
+		room=new Room();
+		roomlist.add(room);
+		room.setId("room4");
+		room.setName("Room4");
+		
 		return Response.ok().entity(roomlist).build();
 	}
 	
