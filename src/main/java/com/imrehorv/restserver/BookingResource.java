@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.imrehorv.restserver.model.BookingRecord;
-import com.imrehorv.restserver.persistence.BookingRepo;
+import com.imrehorv.restserver.persistence.jpa.BookingRepo;
 
 @Path("/booking")
 public class BookingResource {
@@ -42,6 +42,7 @@ public class BookingResource {
 		LocalDate date=LocalDate.parse(datestr);
 		logger.info("parsed date:"+date);
 		List<BookingRecord> result=bookingRepo.load(date);
+		logger.info("load result:"+result);
 		return Response.accepted().entity(result).build();
 	}
 

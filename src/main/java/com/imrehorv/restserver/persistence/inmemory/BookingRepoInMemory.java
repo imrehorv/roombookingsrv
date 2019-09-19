@@ -1,4 +1,4 @@
-package com.imrehorv.restserver.persistence;
+package com.imrehorv.restserver.persistence.inmemory;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,11 +13,12 @@ import javax.ejb.Stateless;
 import com.imrehorv.restserver.model.BookingRecord;
 
 @Stateless
-public class BookingRepo {
+public class BookingRepoInMemory {
 	
-	Logger logger=Logger.getLogger(BookingRepo.class.getName());
+	Logger logger=Logger.getLogger(BookingRepoInMemory.class.getName());
 	
 	private Map<LocalDate,Map<LocalDateTime,Map<String,BookingRecord>>> map=new HashMap<>();
+	
 	
 	public void store(BookingRecord record) {
 		logger.info("store called record:"+record);
