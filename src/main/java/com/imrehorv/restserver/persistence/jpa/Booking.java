@@ -64,13 +64,7 @@ public class Booking {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((date == null) ? 0 : date.hashCode());
-		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((roomid == null) ? 0 : roomid.hashCode());
-		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
-		result = prime * result + ((userid == null) ? 0 : userid.hashCode());
-		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 	@Override
@@ -82,37 +76,7 @@ public class Booking {
 		if (getClass() != obj.getClass())
 			return false;
 		Booking other = (Booking) obj;
-		if (date == null) {
-			if (other.date != null)
-				return false;
-		} else if (!date.equals(other.date))
-			return false;
-		if (endDate == null) {
-			if (other.endDate != null)
-				return false;
-		} else if (!endDate.equals(other.endDate))
-			return false;
 		if (id != other.id)
-			return false;
-		if (roomid == null) {
-			if (other.roomid != null)
-				return false;
-		} else if (!roomid.equals(other.roomid))
-			return false;
-		if (startDate == null) {
-			if (other.startDate != null)
-				return false;
-		} else if (!startDate.equals(other.startDate))
-			return false;
-		if (userid == null) {
-			if (other.userid != null)
-				return false;
-		} else if (!userid.equals(other.userid))
-			return false;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
 			return false;
 		return true;
 	}

@@ -15,7 +15,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.imrehorv.restserver.model.BookingRecord;
+import com.imrehorv.restserver.model.User;
 import com.imrehorv.restserver.persistence.jpa.BookingRepo;
+import com.imrehorv.restserver.persistence.jpa.UserRepo;
 
 @Path("/booking")
 public class BookingResource {
@@ -23,6 +25,9 @@ public class BookingResource {
 	
 	@Inject
 	private BookingRepo bookingRepo;
+	
+	@Inject
+	private UserRepo userRepo;
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -42,8 +47,17 @@ public class BookingResource {
 		LocalDate date=LocalDate.parse(datestr);
 		logger.info("parsed date:"+date);
 		List<BookingRecord> result=bookingRepo.load(date);
+		setUserName(result);
 		logger.info("load result:"+result);
 		return Response.accepted().entity(result).build();
+	}
+
+	private void setUserName(List<BookingRecord> list) {
+		for (BookingRecord bookingRecord:list)
+		{
+			User user=userRepo.load(bookingRecord.getUserid());
+			bookingRecord.setUsername(user.getName());
+		}
 	}
 
 }
