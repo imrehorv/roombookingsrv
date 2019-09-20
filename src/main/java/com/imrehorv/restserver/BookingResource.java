@@ -56,7 +56,10 @@ public class BookingResource {
 		for (BookingRecord bookingRecord:list)
 		{
 			User user=userRepo.load(bookingRecord.getUserid());
-			bookingRecord.setUsername(user.getName());
+			if (user!=null)
+			{
+				bookingRecord.setUsername(user.getName());	
+			}
 		}
 	}
 

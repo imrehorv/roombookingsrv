@@ -30,13 +30,13 @@ public class UserRepo {
 		else 
 		{
 			logger.info("update record");			
-			em.merge(entity);
+			em.merge(mapToDB(user));
 		}
 	}
 	
-	public void delete(User user) {
-		logger.info("delete called record:"+user);
-		com.imrehorv.restserver.persistence.jpa.User entity=find(user.getId());
+	public void delete(String id) {
+		logger.info("delete called id:"+id);
+		com.imrehorv.restserver.persistence.jpa.User entity=find(id);
 		if (entity!=null)
 		{
 			em.remove(entity);
