@@ -1,52 +1,64 @@
 package com.imrehorv.restserver;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.imrehorv.restserver.model.Room;
+import com.imrehorv.restserver.persistence.jpa.RoomRepo;
 
-@Path("/rooms")
+@Path("/room")
 public class RoomResource {
 
 	Logger logger=Logger.getLogger(RoomResource.class.getName());
 	
+	@Inject
+	RoomRepo roomRepo;
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response store(Room room)
+	{
+		logger.info("store called room:"+room);
+		roomRepo.store(room);
+		return Response.accepted().entity(room).build();
+	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRooms()
+	public Response list()
 	{
-		logger.info("getRooms called");
-		
-		List<Room> roomlist=new ArrayList<Room>();
-		
-		Room room=new Room();
-		roomlist.add(room);
-		room.setId("room1");
-		room.setName("Room1");
-		
-		room=new Room();
-		roomlist.add(room);
-		room.setId("room2");
-		room.setName("Room2");
-		
-		room=new Room();
-		roomlist.add(room);
-		room.setId("room3");
-		room.setName("Room3");
-		
-		room=new Room();
-		roomlist.add(room);
-		room.setId("room4");
-		room.setName("Room4");
-		
-		return Response.ok().entity(roomlist).build();
+		logger.info("room list called");
+		return Response.accepted().entity(roomRepo.list()).build();
 	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}")
+	public Response load(@PathParam("id") String id)
+	{
+		logger.info("room list called");
+		return Response.accepted().entity(roomRepo.load(id)).build();
+	}
+	
+	@DELETE
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}")
+	public Response delete(@PathParam("id") String id)
+	{
+		logger.info("delete called id:"+id);
+		roomRepo.delete(id);
+		return Response.accepted().build();
+	}
+	
 	
 }

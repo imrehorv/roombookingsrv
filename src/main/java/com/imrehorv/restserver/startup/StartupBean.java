@@ -8,7 +8,9 @@ import javax.ejb.Startup;
 import javax.inject.Inject;
 
 import com.imrehorv.restserver.UserResource;
+import com.imrehorv.restserver.model.Room;
 import com.imrehorv.restserver.model.User;
+import com.imrehorv.restserver.persistence.jpa.RoomRepo;
 import com.imrehorv.restserver.persistence.jpa.UserRepo;
 
 @Singleton
@@ -17,6 +19,9 @@ public class StartupBean {
 	
 	@Inject
 	UserRepo userRepo;
+	
+	@Inject
+	RoomRepo roomRepo;
 	
 	Logger logger=Logger.getLogger(UserResource.class.getName());	
 	
@@ -42,6 +47,23 @@ public class StartupBean {
 			user.setName("User1");
 			user.setEmail("user1@example.eu");
 			userRepo.store(user);
+		}
+		storeRoom("room1","Room1");
+		storeRoom("room2","Room2");
+		storeRoom("room3","Room3");
+		storeRoom("room4","Room4");
+		storeRoom("room5","Room5");
+	}
+
+	private void storeRoom(String id,String name) {
+		Room room1=roomRepo.load(id);
+		logger.info(id+" : "+room1);		
+		if (room1==null)
+		{
+			Room room=new Room();
+			room.setId(id);
+			room.setName(name);
+			roomRepo.store(room);
 		}
 	}	
 
