@@ -1,6 +1,7 @@
 package com.imrehorv.restserver.startup;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -18,60 +19,66 @@ import com.imrehorv.restserver.persistence.jpa.UserRepo;
 @Singleton
 @Startup
 public class StartupBean {
-	
+
 	@Inject
 	UserRepo userRepo;
-	
+
 	@Inject
 	RoomRepo roomRepo;
-	
+
 	@Inject
 	AuthRepo authRepo;
-	
-	Logger logger=Logger.getLogger(UserResource.class.getName());	
-	
+
+	Logger logger = Logger.getLogger(UserResource.class.getName());
+
 	@PostConstruct
-	private void startup() throws NoSuchAlgorithmException {
-		logger.info("Application startup");		
-		User admin=userRepo.load("admin");
-		logger.info("Admin user:"+admin);		
-		if (admin==null)
-		{
-			User user=new User();
+	private void startup() {
+		logger.info("Application startup");
+		User admin = userRepo.load("admin");
+		logger.info("Admin user:" + admin);
+		if (admin == null) {
+			User user = new User();
 			user.setId("admin");
 			user.setName("Admin");
 			user.setEmail("email@example.eu");
 			userRepo.store(user);
-			authRepo.storePassword("admin", "admin");
+			try {
+				authRepo.storePassword("admin", "admin");
+			} catch (NoSuchAlgorithmException e) {
+				logger.log(Level.SEVERE, "storePassword failed", e);
+			}
 		}
-		User user1=userRepo.load("user1");
-		logger.info("user1:"+user1);		
-		if (user1==null)
-		{
-			User user=new User();
+		User user1 = userRepo.load("user1");
+		logger.info("user1:" + user1);
+		if (user1 == null) {
+			User user = new User();
 			user.setId("user1");
 			user.setName("User1");
 			user.setEmail("user1@example.eu");
 			userRepo.store(user);
-			authRepo.storePassword("user1", "user1");			
+			try {
+				authRepo.storePassword("user1", "user1");
+			} catch (NoSuchAlgorithmException e) {
+				logger.log(Level.SEVERE, "storePassword failed", e);
+			}
+
 		}
-		storeRoom("room1","Room1");
-		storeRoom("room2","Room2");
-		storeRoom("room3","Room3");
-		storeRoom("room4","Room4");
-		storeRoom("room5","Room5");
+		storeRoom("room1", "Room1");
+		storeRoom("room2", "Room2");
+		storeRoom("room3", "Room3");
+		storeRoom("room4", "Room4");
+		storeRoom("room5", "Room5");
 	}
 
-	private void storeRoom(String id,String name) {
-		Room room1=roomRepo.load(id);
-		logger.info(id+" : "+room1);		
-		if (room1==null)
-		{
-			Room room=new Room();
+	private void storeRoom(String id, String name) {
+		Room room1 = roomRepo.load(id);
+		logger.info(id + " : " + room1);
+		if (room1 == null) {
+			Room room = new Room();
 			room.setId(id);
 			room.setName(name);
 			roomRepo.store(room);
 		}
-	}	
+	}
 
 }
