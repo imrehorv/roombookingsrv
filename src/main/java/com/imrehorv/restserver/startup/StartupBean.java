@@ -1,5 +1,6 @@
 package com.imrehorv.restserver.startup;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -10,6 +11,7 @@ import javax.inject.Inject;
 import com.imrehorv.restserver.UserResource;
 import com.imrehorv.restserver.model.Room;
 import com.imrehorv.restserver.model.User;
+import com.imrehorv.restserver.persistence.jpa.AuthRepo;
 import com.imrehorv.restserver.persistence.jpa.RoomRepo;
 import com.imrehorv.restserver.persistence.jpa.UserRepo;
 
@@ -23,10 +25,13 @@ public class StartupBean {
 	@Inject
 	RoomRepo roomRepo;
 	
+	@Inject
+	AuthRepo authRepo;
+	
 	Logger logger=Logger.getLogger(UserResource.class.getName());	
 	
 	@PostConstruct
-	private void startup() {
+	private void startup() throws NoSuchAlgorithmException {
 		logger.info("Application startup");		
 		User admin=userRepo.load("admin");
 		logger.info("Admin user:"+admin);		
@@ -37,6 +42,7 @@ public class StartupBean {
 			user.setName("Admin");
 			user.setEmail("email@example.eu");
 			userRepo.store(user);
+			authRepo.storePassword("admin", "admin");
 		}
 		User user1=userRepo.load("user1");
 		logger.info("user1:"+user1);		
@@ -47,6 +53,7 @@ public class StartupBean {
 			user.setName("User1");
 			user.setEmail("user1@example.eu");
 			userRepo.store(user);
+			authRepo.storePassword("user1", "user1");			
 		}
 		storeRoom("room1","Room1");
 		storeRoom("room2","Room2");
