@@ -19,6 +19,11 @@ public class UserRepo {
 	Logger logger=Logger.getLogger(UserRepo.class.getName());
 	
 	
+	public void registerUser(User user) {
+		logger.info("registerUser called record:"+user);
+		em.persist(mapToDB(user));	
+	}
+	
 	public void store(User user) {
 		logger.info("store called record:"+user);
 		com.imrehorv.restserver.persistence.jpa.User entity=find(user.getId());

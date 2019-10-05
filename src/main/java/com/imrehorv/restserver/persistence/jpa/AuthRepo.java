@@ -23,6 +23,17 @@ public class AuthRepo {
 	Logger logger=Logger.getLogger(AuthRepo.class.getName());
 	
 	
+	public void registerUser(String userid,String password) throws NoSuchAlgorithmException {
+		logger.info("registerUser called userid: "+userid);
+		String salt=authBean.getSalt();
+		String hash=authBean.hash(salt, password);
+		Auth entity=new Auth();
+		entity.setId(userid);
+		entity.setSalt(salt);
+		entity.setHash(hash);
+		em.persist(entity);
+	}
+	
 	public void storePassword(String userid,String password) throws NoSuchAlgorithmException {
 		logger.info("storePassword called userid: "+userid);
 		Auth entity=load(userid);
